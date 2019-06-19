@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 require 'IDMail.php';
 
 $idmail = new IDMail();

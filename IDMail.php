@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;

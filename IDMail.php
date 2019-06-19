@@ -1,6 +1,5 @@
 <?php
 
-use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 
@@ -10,9 +9,6 @@ class IDMail
 
     function __construct()
     {
-        $dotenv = Dotenv::create(__DIR__);
-        $dotenv->load();
-
         $this->client = $this->login();
     }
 

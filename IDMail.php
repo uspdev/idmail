@@ -35,9 +35,9 @@ class IDMail
         ]);
 
         # extract SAML data from response
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML($response->getBody());
-        $xpath = new DOMXpath($dom);
+        $xpath = new \DOMXpath($dom);
 
         $relaystate = $xpath->query("//html/body/form/div/input[@name='RelayState']/@value")[0]->textContent;
         $samlresponse = $xpath->query("//html/body/form/div/input[@name='SAMLResponse']/@value")[0]->textContent;

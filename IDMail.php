@@ -6,34 +6,17 @@ use GuzzleHttp\Cookie\CookieJar;
 
 class IDMail
 {
+    var $client;
+
     function __construct()
     {
         $dotenv = Dotenv::create(__DIR__);
         $dotenv->load();
+
+        $this->client = $this->login();
     }
 
-    function extract_email($json)
-    {
-        if ($json->response == true) {
-            $last = ['date' => 0, 'email' => '',];
-            foreach ($json->result as $email => $dados) {
-                if ($dados->tipo == "Pessoal" or $dados->tipo == "Secundaria") {
-                    $user = explode("@", $email);
-                    if ($user[1] == "ime.usp.br") {
-                        $date = strtotime($dados->dtainival);
-                        if ($last['date'] < $date) {
-                            $last['date'] = $date;
-                            $last['email'] = $email;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $last['email'];
-    }
-
-    function id_get_emails($nusp)
+    private function login()
     {
         $login = getenv('LOGIN');
         $pass = getenv('PASSWORD');
@@ -71,7 +54,33 @@ class IDMail
             ]
         ]);
 
-        $response = $client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
+        return $client;
+    }
+
+    function extract_email($json)
+    {
+        if ($json->response == true) {
+            $last = ['date' => 0, 'email' => '',];
+            foreach ($json->result as $email => $dados) {
+                if ($dados->tipo == "Pessoal" or $dados->tipo == "Secundaria") {
+                    $user = explode("@", $email);
+                    if ($user[1] == "ime.usp.br") {
+                        $date = strtotime($dados->dtainival);
+                        if ($last['date'] < $date) {
+                            $last['date'] = $date;
+                            $last['email'] = $email;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $last['email'];
+    }
+
+    function id_get_emails($nusp)
+    {
+        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
 
         return $response->getBody();
     }

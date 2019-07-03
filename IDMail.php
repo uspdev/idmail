@@ -10,6 +10,7 @@ class IDMail
     function __construct()
     {
         $this->client = $this->login();
+        $this->update_cache();
     }
 
     private function login()
@@ -53,6 +54,12 @@ class IDMail
         return $client;
     }
 
+    private function update_cache()
+    {
+        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/all_emails/");
+        file_put_contents(getenv('MAIL_CACHE'), $response->getBody());
+    }
+
     function extract_email($json)
     {
         if ($json->response == true) {
@@ -79,6 +86,22 @@ class IDMail
         $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
 
         return $response->getBody();
+    }
+
+    static function find_mail($nusp)
+    {
+        $file = file_get_contents(getenv('MAIL_CACHE'));
+        $json = json_decode($file);
+
+        if ($json->response == true) {
+            foreach ($json->result as $email => $dados) {
+                if (($dados->tipo == "P" or $dados->tipo == "O") and $dados->codpes == $nusp) {
+                    return $email;
+                }
+            }
+        }
+
+        return "";
     }
 }
 

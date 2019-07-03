@@ -9,10 +9,15 @@ if (!isset($argv[1])) {
 
 $dotenv = Dotenv::create(__DIR__);
 $dotenv->load();
+$nusp = $argv[1];
 
-$idmail = new IDMail();
+$email = IDMail::find_mail($nusp);
+if ($email == "") {
+    $idmail = new IDMail();
+    $json = json_decode($idmail->id_get_emails($nusp));
+    $email = $idmail->extract_email($json);
+}
 
-$json = json_decode($idmail->id_get_emails($argv[1]));
-echo $idmail->extract_email($json)."\n";
+echo $email."\n";
 
 ?>

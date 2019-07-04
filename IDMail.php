@@ -90,7 +90,11 @@ class IDMail
 
     static function find_mail($nusp)
     {
-        $file = file_get_contents(getenv('MAIL_CACHE'));
+        $cache = getenv('MAIL_CACHE');
+        if (!file_exists($cache)) {
+            return "";
+        }
+        $file = file_get_contents($cache);
         $json = json_decode($file);
 
         if ($json->response == true) {

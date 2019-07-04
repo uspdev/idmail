@@ -81,6 +81,20 @@ class IDMail
         return $last['email'];
     }
 
+    function list_emails($json, $domain, $type)
+    {
+        $emails = [];
+        if ($json->response == true) {
+            foreach ($json->result as $email => $data) {
+                if (in_array($data->tipo, $type)) {
+                    $emails[] = ['email' => $email, 'name' => $data->nomaptema];
+                }
+            }
+        }
+
+        return $emails;
+    }
+
     function id_get_emails($nusp)
     {
         $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
@@ -88,7 +102,7 @@ class IDMail
         return $response->getBody();
     }
 
-    static function find_mail($nusp, $type)
+    static function find_email($nusp, $type)
     {
         $cache = getenv('MAIL_CACHE');
         if (!file_exists($cache)) {

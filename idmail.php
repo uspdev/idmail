@@ -3,21 +3,32 @@ require 'vendor/autoload.php';
 require 'IDMail.php';
 use Dotenv\Dotenv;
 
-if (!isset($argv[1])) {
+if (!isset($argv[2])) {
     die("uso: ".$argv[0]." [nusp]\n");
 }
 
 $dotenv = Dotenv::create(__DIR__);
 $dotenv->load();
-$nusp = $argv[1];
+$mode = $argv[1];
+$nusp = $argv[2];
 
-$email = IDMail::find_mail($nusp, ["P", "O"]);
-if ($email == "") {
+if ($mode == "list") {
     $idmail = new IDMail();
     $json = json_decode($idmail->id_get_emails($nusp));
-    $email = $idmail->extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
+    $emails = $idmail->list_emails($json, "ime.usp.br", ["Institucional", "Grupo"]);
+    foreach ($emails as $email) {
+        echo $email['email'].":".$email['name']."\n";
+    }
+}
+else {
+    $email = IDMail::find_email($nusp, ["P", "O"]);
+    if ($email == "") {
+        $idmail = new IDMail();
+        $json = json_decode($idmail->id_get_emails($nusp));
+        $email = $idmail->extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
+    }
+    echo $email."\n";
 }
 
-echo $email."\n";
 
 ?>

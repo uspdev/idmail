@@ -60,15 +60,15 @@ class IDMail
         file_put_contents(getenv('MAIL_CACHE'), $response->getBody());
     }
 
-    function extract_email($json)
+    function extract_email($json, $domain, $type)
     {
         if ($json->response == true) {
             $last = ['date' => 0, 'email' => '',];
-            foreach ($json->result as $email => $dados) {
-                if ($dados->tipo == "Pessoal" or $dados->tipo == "Secundaria") {
+            foreach ($json->result as $email => $data) {
+                if (in_array($data->tipo, $type)) {
                     $user = explode("@", $email);
-                    if ($user[1] == "ime.usp.br") {
-                        $date = strtotime($dados->dtainival);
+                    if ($user[1] == $domain) {
+                        $date = strtotime($data->dtainival);
                         if ($last['date'] < $date) {
                             $last['date'] = $date;
                             $last['email'] = $email;
@@ -88,7 +88,7 @@ class IDMail
         return $response->getBody();
     }
 
-    static function find_mail($nusp)
+    static function find_mail($nusp, $type)
     {
         $cache = getenv('MAIL_CACHE');
         if (!file_exists($cache)) {
@@ -98,8 +98,8 @@ class IDMail
         $json = json_decode($file);
 
         if ($json->response == true) {
-            foreach ($json->result as $email => $dados) {
-                if (($dados->tipo == "P" or $dados->tipo == "O") and $dados->codpes == $nusp) {
+            foreach ($json->result as $email => $data) {
+                if (in_array($data->tipo, $type) and $data->codpes == $nusp) {
                     return $email;
                 }
             }

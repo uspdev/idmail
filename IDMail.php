@@ -7,10 +7,13 @@ class IDMail
 {
     var $client;
 
-    function __construct()
+    function __construct($cache_mode)
     {
         $this->client = $this->login();
-        $this->update_cache();
+
+        if ($cache_mode == "all") {
+            $this->update_cache();
+        }
     }
 
     private function login()
@@ -57,7 +60,7 @@ class IDMail
     private function update_cache()
     {
         $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/all_emails/");
-        file_put_contents(getenv('MAIL_CACHE'), $response->getBody());
+        file_put_contents(getenv('MAIL_CACHE')."/all_emails.php", $response->getBody());
     }
 
     function extract_email($json, $domain, $type)
@@ -104,7 +107,7 @@ class IDMail
 
     static function find_email($nusp, $type)
     {
-        $cache = getenv('MAIL_CACHE');
+        $cache = getenv('MAIL_CACHE')."/all_emails.php";
         if (!file_exists($cache)) {
             return "";
         }

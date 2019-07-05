@@ -13,7 +13,7 @@ $mode = $argv[1];
 $nusp = $argv[2];
 
 if ($mode == "list") {
-    $idmail = new IDMail();
+    $idmail = new IDMail("list");
     $json = json_decode($idmail->id_get_emails($nusp));
     $emails = $idmail->list_emails($json, "ime.usp.br", ["Institucional", "Grupo"]);
     foreach ($emails as $email) {
@@ -23,7 +23,7 @@ if ($mode == "list") {
 else {
     $email = IDMail::find_email($nusp, ["P", "O"]);
     if ($email == "") {
-        $idmail = new IDMail();
+        $idmail = new IDMail("all");
         $json = json_decode($idmail->id_get_emails($nusp));
         $email = $idmail->extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
     }

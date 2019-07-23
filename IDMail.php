@@ -59,11 +59,19 @@ class IDMail
 
     private function update_cache()
     {
-        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/all_emails/");
-        file_put_contents(getenv('MAIL_CACHE')."/all_emails.php", $response->getBody());
+        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/".getenv('LOGIN')."/all_emails/");
+        file_put_contents(getenv('MAIL_CACHE')."/all_emails.json", $response->getBody());
     }
 
-    function extract_email($json, $domain, $type)
+    function id_get_emails($nusp)
+    {
+        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
+        file_put_contents(getenv('MAIL_CACHE')."/".$nusp.".json", $response->getBody());
+
+        return $response->getBody();
+    }
+
+    static function extract_email($json, $domain, $type)
     {
         if ($json->response == true) {
             $last = ['date' => 0, 'email' => '',];
@@ -84,7 +92,7 @@ class IDMail
         return $last['email'];
     }
 
-    function list_emails($json, $domain, $type)
+    static function list_emails($json, $domain, $type)
     {
         $emails = [];
         if ($json->response == true) {
@@ -98,22 +106,33 @@ class IDMail
         return $emails;
     }
 
-    function id_get_emails($nusp)
-    {
-        $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
+    static function get_cache($cache_file) {
+        if (!file_exists($cache_file)) {
+            return null;
+        }
 
-        return $response->getBody();
+        $delta = (time() - filemtime($cache_file))/86400;
+        if ($delta > 1) {
+            return null;
+        }
+
+        return file_get_contents($cache_file);
     }
 
-    static function find_email($nusp, $type)
-    {
-        $cache = getenv('MAIL_CACHE')."/all_emails.php";
-        if (!file_exists($cache)) {
-            return "";
-        }
-        $file = file_get_contents($cache);
-        $json = json_decode($file);
+    static function cache_get_emails($nusp) {
+        $cache_file = getenv('MAIL_CACHE')."/".$nusp.".json";
+        return IDMail::get_cache($cache_file);
+    }
 
+    static function cache_find_email($nusp, $type)
+    {
+        $cache_file = getenv('MAIL_CACHE')."/all_emails.json";
+        $cache = IDMail::get_cache($cache_file);
+        if (!$cache) {
+            return null;
+        }
+
+        $json = json_decode($cache);
         if ($json->response == true) {
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type) and $data->codpes == $nusp) {
@@ -122,7 +141,7 @@ class IDMail
             }
         }
 
-        return "";
+        return null;
     }
 }
 

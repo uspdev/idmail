@@ -92,7 +92,7 @@ class IDMail
         return $last['email'];
     }
 
-    static function list_emails($json, $domain, $type)
+    static function extract_lists($json, $domain, $type)
     {
         $emails = [];
         if ($json->response == true) {
@@ -106,7 +106,8 @@ class IDMail
         return $emails;
     }
 
-    static function get_cache($cache_file) {
+    static function get_cache($cache_file)
+    {
         if (!file_exists($cache_file)) {
             return null;
         }
@@ -119,7 +120,8 @@ class IDMail
         return file_get_contents($cache_file);
     }
 
-    static function cache_get_emails($nusp) {
+    static function cache_get_emails($nusp)
+    {
         $cache_file = getenv('MAIL_CACHE')."/".$nusp.".json";
         return IDMail::get_cache($cache_file);
     }
@@ -142,6 +144,18 @@ class IDMail
         }
 
         return null;
+    }
+
+    static function find_email($nusp)
+    {
+        $email = IDMail::cache_find_email($nusp, ["P", "O"]);
+        if ($email == null) {
+            $idmail = new static("all");
+            $json = json_decode($idmail->id_get_emails($nusp));
+            $email = IDMail::extract_email($json, "ime.usp.br", ["Pessoal", "Secundária"]);
+        }
+
+        return $email;
     }
 }
 

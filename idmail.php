@@ -21,18 +21,13 @@ if ($mode == "list") {
         $idmail = new IDMail("list");
         $json = json_decode($idmail->id_get_emails($nusp));
     }
-    $emails = IDMail::list_emails($json, "ime.usp.br", ["Institucional", "Grupo"]);
+    $emails = IDMail::extract_lists($json, "ime.usp.br", ["Institucional", "Grupo"]);
     foreach ($emails as $email) {
         echo $email['email'].":".$email['name']."\n";
     }
 }
 else {
-    $email = IDMail::cache_find_email($nusp, ["P", "O"]);
-    if ($email == "") {
-        $idmail = new IDMail("all");
-        $json = json_decode($idmail->id_get_emails($nusp));
-        $email = IDMail::extract_email($json, "ime.usp.br", ["Pessoal", "Secundaria"]);
-    }
+    $email = IDMail::find_email($nusp);
     echo $email."\n";
 }
 

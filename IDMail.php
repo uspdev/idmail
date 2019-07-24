@@ -98,7 +98,10 @@ class IDMail
         if ($json->response == true) {
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type)) {
-                    $emails[] = ['email' => $email, 'name' => $data->nomaptema];
+                    $user = explode("@", $email);
+                    if ($user[1] == $domain) {
+                        $emails[] = ['email' => $email, 'name' => $data->nomaptema];
+                    }
                 }
             }
         }

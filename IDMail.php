@@ -74,7 +74,7 @@ class IDMail
     static function extract_email($json, $domain, $type)
     {
         if ($json->response == true) {
-            $last = ['date' => 0, 'email' => '',];
+            $last = ['date' => 0, 'email' => null,];
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type)) {
                     $user = explode("@", $email);
@@ -136,14 +136,19 @@ class IDMail
 
         $json = json_decode($cache);
         if ($json->response == true) {
+            $last = ['date' => 0, 'email' => null,];
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type) and $data->codpes == $nusp) {
-                    return $email;
+                    $date = strtotime($data->dtainival);
+                    if ($last['date'] < $date) {
+                        $last['date'] = $date;
+                        $last['email'] = $email;
+                    }
                 }
             }
         }
 
-        return null;
+        return $last['email'];
     }
 
     static function find_email($nusp)

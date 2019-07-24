@@ -162,6 +162,20 @@ class IDMail
 
         return $email;
     }
+
+    static function find_lists($nusp)
+    {
+        $cache = IDMail::cache_get_emails($nusp);
+        if ($cache) {
+            $json = json_decode($cache);
+        }
+        else {
+            $idmail = new IDMail("list");
+            $json = json_decode($idmail->id_get_emails($nusp));
+        }
+
+        return IDMail::extract_lists($json, "ime.usp.br", ["Institucional", "Grupo"]);
+    }
 }
 
 ?>

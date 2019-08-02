@@ -8,7 +8,9 @@ Ele dispõe por ora de um módulo de login e de uma interface de consulta de ema
   * uma lista de emails não-pessoais de um usuário via `find_lists()`.
 
 ## Configuração
-É necessário um arquivo `.env`. Basta alterar o exemplo conforme a necessidade.
+É necessário:
+  * rodar o `composer install` para instalar as dependências;
+  * um arquivo `.env`. Basta alterar o exemplo conforme a necessidade.
 
 ## Execução via CLI
 Basta rodar `php idmail.php <MODO> <NUSP>` onde o modo pode ser:

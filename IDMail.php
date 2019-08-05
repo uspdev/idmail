@@ -138,8 +138,8 @@ class IDMail
         }
 
         $json = json_decode($cache);
+        $last = ['date' => 0, 'email' => null];
         if ($json->response == true) {
-            $last = ['date' => 0, 'email' => null,];
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type) and $data->codpes == $nusp) {
                     $date = strtotime($data->dtainival);

@@ -100,7 +100,11 @@ class IDMail
                 if (in_array($data->tipo, $type)) {
                     $user = explode("@", $email);
                     if ($user[1] == $domain) {
-                        $emails[] = ['email' => $email, 'name' => $data->nomaptema];
+                        $name = "SEM NOME";
+                        if (property_exists($data, 'nomaptema')) {
+                            $name = $data->nomaptema;
+                        }
+                        $emails[] = ['email' => $email, 'name' => $name];
                     }
                 }
             }

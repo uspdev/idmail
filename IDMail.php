@@ -73,6 +73,7 @@ class IDMail
 
     static function extract_email($json, $domain, $type)
     {
+        $last = ['date' => 0, 'email' => null];
         if ($json->response == true) {
             $last = ['date' => 0, 'email' => null,];
             foreach ($json->result as $email => $data) {

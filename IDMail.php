@@ -73,18 +73,21 @@ class IDMail
 
     static function extract_email($json, $domain, $type)
     {
-        $last = ['date' => 0, 'email' => null];
+        #  dtainival deixou de existir por enquanto
+        #$last = ['date' => 0, 'email' => null];
         if ($json->response == true) {
             $last = ['date' => 0, 'email' => null,];
-            foreach ($json->result as $email => $data) {
-                if (in_array($data->tipo, $type)) {
+            foreach ($json->result as $data) {
+                if (in_array($data->tipema, $type)) {
+                    $email = $data->emausp;
                     $user = explode("@", $email);
                     if ($user[1] == $domain) {
-                        $date = strtotime($data->dtainival);
-                        if ($last['date'] < $date) {
-                            $last['date'] = $date;
-                            $last['email'] = $email;
-                        }
+                        $last['email'] = $email;
+                        #$date = strtotime($data->dtainival);
+                        #if ($last['date'] < $date) {
+                        #    $last['date'] = $date;
+                        #    $last['email'] = $email;
+                        #}
                     }
                 }
             }
@@ -97,8 +100,9 @@ class IDMail
     {
         $emails = [];
         if ($json->response == true) {
-            foreach ($json->result as $email => $data) {
-                if (in_array($data->tipo, $type)) {
+            foreach ($json->result as $data) {
+                if (in_array($data->tipema, $type)) {
+                    $email = $data->emausp;
                     $user = explode("@", $email);
                     if ($user[1] == $domain) {
                         $name = "SEM NOME";
@@ -165,7 +169,7 @@ class IDMail
         if ($email == null) {
             $idmail = new static("all");
             $json = json_decode($idmail->id_get_emails($nusp));
-            $email = IDMail::extract_email($json, "ime.usp.br", ["Pessoal", "Secundária"]);
+            $email = IDMail::extract_email($json, "ime.usp.br", ["P", "O"]);
         }
 
         return $email;
@@ -182,7 +186,7 @@ class IDMail
             $json = json_decode($idmail->id_get_emails($nusp));
         }
 
-        return IDMail::extract_lists($json, "ime.usp.br", ["Institucional", "Grupo"]);
+        return IDMail::extract_lists($json, "ime.usp.br", ["I", "G"]);
     }
 }
 

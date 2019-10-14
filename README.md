@@ -10,6 +10,7 @@ Ele dispõe por ora de um módulo de login e de uma interface de consulta de ema
 ## Configuração
 É necessário:
   * rodar o `composer install` para instalar as dependências;
+  * instalar o `php-curl` e o `php-xml`;
   * um arquivo `.env`. Basta alterar o exemplo conforme a necessidade.
 
 ## Execução via CLI

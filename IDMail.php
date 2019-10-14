@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Middleware;
 
 class IDMail
 {
@@ -67,6 +68,22 @@ class IDMail
     {
         $response = $this->client->get("https://id-admin.internuvem.usp.br/sybase/json/$nusp/emails/");
         file_put_contents(getenv('MAIL_CACHE')."/".$nusp.".json", $response->getBody());
+
+        return $response->getBody();
+    }
+
+    public function members($mode, $list, $emails)
+    {
+        $handler = $this->client->getConfig('handler');
+        $tap = Middleware::tap(function ($request) {
+            # debug
+            echo $request->getBody();
+        });
+        [$group, $domain] = explode('@', $list);
+        $response = $this->client->post("https://id-admin.internuvem.usp.br/gsuite/json/".$domain."/".$group."/group/members/", [
+            GuzzleHttp\RequestOptions::JSON => [$mode => $emails],
+            'handler' => $tap($handler)
+        ]);
 
         return $response->getBody();
     }

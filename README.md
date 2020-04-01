@@ -5,6 +5,7 @@ Ele dispõe por ora de um módulo de login e de uma interface de consulta de ema
 
 ## O que ele fornece
   * uma busca pela conta de email pessoal mais recente do usuário via `find_email()`;
+  * um método para gerenciamento de membros via `members()`;
   * uma lista de emails não-pessoais de um usuário via `find_lists()`.
 
 ## Configuração

@@ -14,9 +14,10 @@ Ele dispõe por ora de um módulo de login e de uma interface de consulta de ema
   * um arquivo `.env`. Basta alterar o exemplo conforme a necessidade.
 
 ## Execução via CLI
-Basta rodar `php idmail.php <MODO> <NUSP>` onde o modo pode ser:
-  * `list`: devolve os emails não-pessoais dado um NUSP;
-  * `default`: devolve o email pessoal mais recente dado um NUSP.
+Basta rodar `php idmail.php <MODO> <COMPLEMENTOS>` onde o modo pode ser:
+  * `list` `<NUSP>`: devolve os emails não-pessoais dado um NUSP;
+  * `add/remove` `<endereço da lista>` `<txt com lista de emails>`: 
+  * `default` `<NUSP>`: devolve o email pessoal mais recente dado um NUSP.
 
 ## Dependências
   * Dotenv (só para execução via CLI);

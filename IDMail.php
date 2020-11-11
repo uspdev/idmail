@@ -203,7 +203,7 @@ class IDMail
             $json = json_decode($idmail->id_get_emails($nusp));
         }
 
-        return IDMail::extract_lists($json, "ime.usp.br", ["I", "G"]);
+        return IDMail::extract_lists($json, "ime.usp.br", ["I", "G", "D"]);
     }
 }
 

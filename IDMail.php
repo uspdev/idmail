@@ -55,6 +55,14 @@ class IDMail
             ]
         ]);
 
+        # Allow id-admin to access user attributes
+        $response = $client->post("https://idpcafe.usp.br/idp/profile/SAML2/Redirect/SSO?execution=e1s2;jsessionid=$jsessionid", [
+            'form_params' => [
+                '_shib_idp_consentOptions' => '_shib_idp_globalConsent',
+                '_eventId_proceed' => 'Aceitar',
+            ]
+        ]);
+
         return $client;
     }
 

@@ -1,6 +1,25 @@
 {
+    "name": "uspdev/idmail",
+    "type": "library",
+    "description": "Classe de PHP que consome JSON do ID-Admin USP",
+    "homepage": "https://github.com/uspdev/idmail",
+    "license": "GPL-3.0-or-later",
+
+    "authors": [{
+        "name": "Will Gnann",
+        "email": "gnann@ime.usp.br",
+        "homepage": "https://github.com/wgnann"
+    }],
+
     "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "^6.3",
         "vlucas/phpdotenv": "^3.4"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Uspdev\\Idmail\\": "src"
+        }
     }
 }

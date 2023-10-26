@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require 'IDMail.php';
+require 'src/IDMail.php';
 use Dotenv\Dotenv;
 
 if (!isset($argv[2])) {

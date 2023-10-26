@@ -1,5 +1,7 @@
 <?php
 
+namespace Uspdev\Idmail;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Middleware;

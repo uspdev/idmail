@@ -8,14 +8,14 @@ Ele dispõe por ora de um módulo de login e de uma interface de consulta de ema
   * um método para gerenciamento de membros via `members()`;
   * uma lista de emails não-pessoais de um usuário via `find_lists()`.
 
-## Configuração
-É necessário:
-  * rodar o `composer install` para instalar as dependências;
-  * instalar o `php-curl` e o `php-xml`;
-  * um arquivo `.env`. Basta alterar o exemplo conforme a necessidade.
+## Como usar
+
+    composer require uspdev/idmail
 
 ## Execução via CLI
-Basta rodar `php idmail.php <MODO> <COMPLEMENTOS>` onde o modo pode ser:
+Ajustar o .env e copiar o `idmail.php` de `vendor/uspdev/idmail`.
+
+Rodar `php idmail.php <MODO> <COMPLEMENTOS>` onde o modo pode ser:
   * `list <NUSP>`: devolve os emails não-pessoais dado um NUSP;
   * `add/remove <endereço da lista> <txt com lista de emails>`: adiciona ou remove os emails, vindos do txt, de uma dada lista;
   * `default <NUSP>`: devolve o email pessoal mais recente dado um NUSP.

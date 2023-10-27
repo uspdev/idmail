@@ -10,7 +10,7 @@ if (!isset($argv[2])) {
         default <nusp>\n");
 }
 
-$dotenv = Dotenv::create(__DIR__);
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 $mode = $argv[1];
 $nusp = $argv[2];

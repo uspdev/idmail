@@ -94,7 +94,7 @@ class IDMail
     {
         #  dtainival deixou de existir por enquanto
         #$last = ['date' => 0, 'email' => null];
-        if ($json->response == true) {
+        if (isset($json->response) and $json->response == true) {
             $last = ['date' => 0, 'email' => null,];
             foreach ($json->result as $data) {
                 if (in_array($data->tipema, $type)) {
@@ -118,7 +118,7 @@ class IDMail
     static function extract_lists($json, $domain, $type)
     {
         $emails = [];
-        if ($json->response == true) {
+        if (isset($json->response) and $json->response == true) {
             foreach ($json->result as $data) {
                 if (in_array($data->tipema, $type)) {
                     $email = $data->emausp;
@@ -167,7 +167,7 @@ class IDMail
 
         $json = json_decode($cache);
         $last = ['date' => 0, 'email' => null];
-        if ($json->response == true) {
+        if (isset($json->response) and $json->response == true) {
             foreach ($json->result as $email => $data) {
                 if (in_array($data->tipo, $type) and $data->codpes == $nusp) {
                     $date = strtotime($data->dtainival);

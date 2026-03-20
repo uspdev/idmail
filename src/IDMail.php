@@ -83,7 +83,7 @@ class IDMail
         });
         [$group, $domain] = explode('@', $list);
         $response = $this->client->post("https://id-admin.internuvem.usp.br/gsuite/json/".$domain."/".$group."/group/members/", [
-            GuzzleHttp\RequestOptions::JSON => [$mode => $emails],
+            'json' => [$mode => $emails],
             'handler' => $tap($handler)
         ]);
 
